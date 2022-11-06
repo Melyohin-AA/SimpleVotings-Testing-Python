@@ -14,7 +14,7 @@ class Registration:
             length = random.randint(min_length, max_length)
             login = "".join((chr(random.randint(ch_min, ch_max)) for _ in range(length)))
             status = ApiCommand.has_user(login).execute(context)
-            if status != 200: break
+            if status != 242: break
         Browser.close_tab(context)
         return login
 

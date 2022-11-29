@@ -13,7 +13,7 @@ class Registration:
         while True:
             length = random.randint(min_length, max_length)
             login = "".join((chr(random.randint(ch_min, ch_max)) for _ in range(length)))
-            status = ApiCommand.has_user(login).execute(context)
+            status = ApiCommand.has_user(login).execute()
             if status != 242: break
         Browser.close_tab(context)
         return login
@@ -32,7 +32,7 @@ class Registration:
     def try_delete(context):
         if hasattr(context, "to_delete_reg") and context.to_delete_reg:
             context.to_delete_reg = False
-            status = ApiCommand.del_user(context.reg_login, context.reg_password).execute(context)
+            status = ApiCommand.del_user(context.reg_login, context.reg_password).execute()
             print("Account deletion:", status)
 
 

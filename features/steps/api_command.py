@@ -1,3 +1,4 @@
+import requests
 from selenium.webdriver.common.by import By
 from features.steps.pages import Pages
 
@@ -7,7 +8,15 @@ class ApiCommand:
         self.name = name
         self.args = args
 
-    def execute(self, context) -> int:
+    def execute(self) -> int:
+        url = Pages.get_api_page_address(self.name)
+        resp = requests.post(url, data=self.args)
+        status = int(resp.content)
+        if status == 400:
+            raise RuntimeError(f"Command {self.name}({self.args}) execution has failed!")
+        return status
+
+    def execute_ui(self, context) -> int:
         context.driver.get(Pages.get_api_page_address(self.name))
         get_status = context.driver.find_element(By.XPATH, "html/body").text
         if get_status == "400":
